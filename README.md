@@ -1,5 +1,12 @@
 # Rust Assignments (100 Problems)
 
+## Solution Guide
+To get the most out of these assignments, it is recommended to solve them in the following order:
+1. **Fundamentals**: Start here to master Rust basics, syntax, and core ownership concepts.
+2. **Intermediate**: Move to this section for traits, generics, and more complex data structures.
+3. **Async**: Finally, tackle asynchronous programming and concurrency.
+
+
 ## How to Run
 
 Tests must be run from the **crate root** (e.g., `cd fundamentals`) or from the workspace root using the `-p` flag.
@@ -45,3 +52,7 @@ Assignments are verified by running their corresponding tests. Each problem has 
 
 3.  **Check Output**:
     The solution is considered correct when the test passes without panics.
+
+---
+## Found bug ?
+If you find bug in any of the file, please report in discord Web3 Chat.
