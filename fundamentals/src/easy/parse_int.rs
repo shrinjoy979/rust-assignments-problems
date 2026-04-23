@@ -9,5 +9,8 @@
 */
 
 pub fn parse_int(s: &str) -> Result<i32, String> {
-    todo!()
+  match s.parse() {
+    Ok(num) => Ok(num),
+    Err(_) => Err("Failed to parse number".to_string()),
+  }
 }

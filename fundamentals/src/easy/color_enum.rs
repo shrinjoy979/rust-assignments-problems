@@ -16,5 +16,10 @@ pub enum Color {
 }
 
 pub fn color_to_rgb(color: Color) -> (u8, u8, u8) {
-    todo!()
+    match color {
+        Color::Red => return (255, 0, 0),
+        Color::Green => return (0, 255, 0),
+        Color::Blue => return (0, 0, 255),
+        Color::Custom(r, g, b) => return (r, g, b),
+    }
 }

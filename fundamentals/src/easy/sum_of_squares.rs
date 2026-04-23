@@ -9,5 +9,9 @@
 */
 
 pub fn sum_of_squares(values: &[i32]) -> i32 {
-    todo!()
+  let squares: Vec<i32> = values.iter()
+    .map(|x| x*x)
+    .collect();
+
+  return squares.iter().sum();
 }

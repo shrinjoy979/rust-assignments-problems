@@ -12,5 +12,13 @@
 use std::collections::HashMap;
 
 pub fn word_count(text: &str) -> HashMap<String, usize> {
-    todo!()
+  let mut map = HashMap::new();
+
+  let words = text.split_whitespace();
+
+  for word in words {
+    *map.entry(word.to_lowercase()).or_insert(0) += 1;
+  }
+
+  return map;
 }

@@ -16,10 +16,15 @@ pub struct Rectangle {
 
 impl Rectangle {
     pub fn area(&self) -> f64 {
-        todo!()
+        let area: f64 = self.width * self.height;
+        return area;
     }
 
     pub fn is_square(&self) -> bool {
-        todo!()
+        if (self.height - self.width).abs() < 1e-9 {
+            return  true;
+        } else {
+            return false;
+        }
     }
 }

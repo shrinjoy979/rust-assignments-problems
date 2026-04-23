@@ -8,5 +8,11 @@
 */
 
 pub fn array_sum(arr: &[i32; 5]) -> i32 {
-    todo!()
+  let mut sum: i32 = 0;
+  
+  for i in arr.iter()  {
+    sum += i;
+  }
+
+  return sum;
 }
