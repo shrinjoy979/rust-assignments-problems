@@ -8,8 +8,18 @@
     cargo test --test unique_elements_test
 */
 
-use std::collections::HashSet;
+use std::{collections::HashSet};
 
 pub fn unique_elements(v: Vec<i32>) -> Vec<i32> {
-  // let mut set = HashSet::new();
+  let mut set: HashSet<i32> = HashSet::new();
+  let mut result: Vec<i32> = vec![];
+
+  for i in v {
+    let seen = set.insert(i);
+    if seen {
+      result.push(i);
+    }
+  }
+
+  return result;
 }
