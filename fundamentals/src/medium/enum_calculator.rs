@@ -17,5 +17,16 @@ pub enum Operation {
 }
 
 pub fn calculate(op: Operation) -> Result<f64, String> {
-    todo!()
+    match op {
+        Operation::Add(a, b) => Ok(a+b),
+        Operation::Sub(a, b) => Ok(a-b),
+        Operation::Mul(a, b) => Ok(a*b),
+        Operation::Div(a, b) => {
+            if b == 0.0 {
+                Err("Division by zero".to_string())
+            } else {
+                Ok(a / b)
+            }
+        }
+    }
 }
