@@ -10,5 +10,5 @@
 */
 
 pub fn get_config(value: Option<String>) -> String {
-    todo!()
+  value.unwrap_or("default".to_string())
 }
