@@ -11,5 +11,10 @@
 */
 
 pub fn parse_and_add(a: &str, b: &str) -> Result<i32, std::num::ParseIntError> {
-    todo!()
+  let a_int: i32  = a.parse()?;
+  let b_int: i32 = b.parse()?;
+
+  let sum = a_int + b_int;
+
+  Ok(sum)
 }
