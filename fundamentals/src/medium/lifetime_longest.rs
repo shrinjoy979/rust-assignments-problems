@@ -10,5 +10,9 @@
 */
 
 pub fn longest<'a>(s1: &'a str, s2: &'a str) -> &'a str {
-    todo!()
+  if s1.chars().count() >= s2.chars().count() {
+    s1
+  } else {
+    s2
+  }
 }
