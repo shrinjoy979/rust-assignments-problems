@@ -17,6 +17,6 @@ pub struct Fahrenheit(pub f64);
 
 impl From<Celsius> for Fahrenheit {
     fn from(c: Celsius) -> Self {
-        todo!()
+        Fahrenheit(c.0 * 9.00/5.00 + 32.00)
     }
 }
