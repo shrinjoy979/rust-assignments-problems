@@ -18,10 +18,24 @@ pub struct Record {
 
 impl Record {
     pub fn to_bytes(&self) -> Vec<u8> {
-        todo!()
+        let mut v: Vec<u8> = self.id.to_le_bytes().to_vec();
+        v.extend(&self.value.to_le_bytes());
+        v
     }
 
     pub fn from_bytes(data: &[u8]) -> Result<Self, String> {
-        todo!()
+        if data.len() != 6 {
+            return Err("Invalid Length".to_string());
+        }
+
+        let id = u32::from_le_bytes(
+            data[0..4].try_into().map_err(|_| "Invalid id bytes".to_string())?
+        );
+
+        let value = u16::from_le_bytes(
+            data[4..6].try_into().map_err(|_| "Invalid value bytes".to_string())?
+        );
+
+        Ok(Record { id, value })
     }
 }
