@@ -10,9 +10,16 @@
 */
 
 pub fn pack_u16(high: u16, low: u16) -> u32 {
-    todo!()
+    // move high to upper 16 bits, keep low in lower 16 bits
+    ((high as u32) << 16) | (low as u32)
 }
 
 pub fn unpack_u32(packed: u32) -> (u16, u16) {
-    todo!()
+    // extract upper 16 bits
+    let high = (packed >> 16) as u16;
+
+    // extract lower 16 bits
+    let low = (packed & 0xFFFF) as u16;
+
+    (high, low)
 }

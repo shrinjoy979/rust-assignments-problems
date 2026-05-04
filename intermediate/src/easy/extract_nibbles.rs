@@ -9,5 +9,8 @@
 */
 
 pub fn extract_nibbles(byte: u8) -> (u8, u8) {
-    todo!()
+  let upper: u8 = (byte >> 4) & 0x0F;
+  let lower: u8 = byte & 0x0F;
+
+  (upper, lower)
 }
