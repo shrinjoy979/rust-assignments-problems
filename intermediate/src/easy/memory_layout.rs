@@ -9,6 +9,8 @@
     cargo test --test memory_layout_test
 */
 
+use std::mem;
+
 pub fn type_info<T>() -> (usize, usize) {
-    todo!()
+  (mem::size_of::<T>(), mem::align_of::<T>())
 }
