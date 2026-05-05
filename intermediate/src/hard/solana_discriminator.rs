@@ -30,10 +30,47 @@ impl AccountData for TokenAccount {
     }
 
     fn serialize(&self) -> Vec<u8> {
-        todo!()
+        let mut data = Vec::new();
+
+        // 8 bytes
+        data.extend(&Self::discriminator());
+
+        // 32 bytes
+        data.extend(&self.owner);
+
+        // 8 bytes
+        data.extend(&self.amount.to_le_bytes());
+
+        data
     }
 
     fn deserialize(data: &[u8]) -> Result<Self, String> {
-        todo!()
+        // total expected: 8 + 32 + 8 => 48
+        if data.len() != 48 {
+            return Err("Invalid inputs".to_string());
+        }
+
+        // check discriminator
+        let disc: [u8; 8] = data[0..8]
+            .try_into()
+            .map_err(|_| "invalid discriminator".to_string())?;
+
+        if disc != Self::discriminator() {
+            return Err("discriminator mismatch".to_string());
+        }
+
+        // check owner
+        let owner: [u8; 32] = data[9..40]
+            .try_into()
+            .map_err(|_| "Invalid owner byte")?;
+
+        // check amount
+        let amount = u64::from_le_bytes(
+            data
+                .try_into()
+                .map_err(|_| "Invalid inputs".to_string())?
+            );
+
+        Ok(TokenAccount {owner, amount})
     }
 }
