@@ -15,6 +15,9 @@ pub struct Payload {
 
 impl From<Vec<u16>> for Payload {
     fn from(v: Vec<u16>) -> Self {
-        todo!()
+        let data = v.iter()
+            .flat_map(|n| n.to_be_bytes())
+            .collect();
+        Payload { data }
     }
 }
