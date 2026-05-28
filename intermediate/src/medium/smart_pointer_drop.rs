@@ -18,8 +18,12 @@ pub struct Logger {
     pub drop_count: Arc<Mutex<usize>>,
 }
 
+
 impl Drop for Logger {
     fn drop(&mut self) {
-        todo!()
+        println!("Dropping {}", self.name);
+
+        let mut count = self.drop_count.lock().unwrap();
+        *count += 1;
     }
 }
