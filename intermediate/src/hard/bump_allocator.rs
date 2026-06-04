@@ -16,10 +16,19 @@ pub struct BumpAllocator {
 
 impl BumpAllocator {
     pub fn new() -> Self {
-        todo!()
+        BumpAllocator {
+            buffer: [0u8; 1024],
+            cursor: 0,
+        }
     }
 
     pub fn alloc(&mut self, size: usize) -> Result<&mut [u8], String> {
-        todo!()
+        let end = self.cursor + size;
+        if end > self.buffer.len() {
+            return Err(format!("Out of memory: requested {size} bytes but only {} remaining", self.buffer.len() - self.cursor));
+        }
+        let slice = &mut self.buffer[self.cursor..end];
+        self.cursor = end;
+        Ok(slice)
     }
 }
