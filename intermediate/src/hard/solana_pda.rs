@@ -11,5 +11,17 @@
 */
 
 pub fn derive_pda(program_id: [u8; 32], seeds: &[&[u8]]) -> [u8; 32] {
-    todo!()
+    let mut result = program_id;
+
+    for seed in seeds {
+        let mut padded = [0u8; 32];
+        let len = seed.len().min(32);
+        padded[..len].copy_from_slice(&seed[..len]);
+
+        for i in 0..32 {
+            result[i] ^= padded[i];
+        }
+    }
+
+    result
 }
