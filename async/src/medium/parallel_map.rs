@@ -13,5 +13,10 @@
 use std::thread;
 
 pub fn parallel_map(v: Vec<i32>, f: fn(i32) -> i32) -> Vec<i32> {
-    todo!()
+  let handles: Vec<thread::JoinHandle<i32>> = v
+      .into_iter()
+      .map(|x| thread::spawn(move || f(x)))
+      .collect();
+
+  handles.into_iter().map(|h| h.join().unwrap()).collect()
 }
