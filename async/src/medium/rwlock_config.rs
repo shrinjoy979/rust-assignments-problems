@@ -19,5 +19,32 @@ pub struct Config {
 }
 
 pub fn update_and_read_config() -> String {
-    todo!()
+    let mut settings = HashMap::new();
+    settings.insert("key".to_string(), "initial".to_string());
+    let config = Arc::new(RwLock::new(Config { settings }));
+
+    let mut handles = vec![];
+
+    for _ in 0..5 {
+        let config = Arc::clone(&config);
+        handles.push(thread::spawn(move || {
+            let cfg = config.read().unwrap();
+            let _ = cfg.settings.get("key").cloned();
+        }));
+    }
+
+    {
+        let config = Arc::clone(&config);
+        handles.push(thread::spawn(move || {
+            let mut cfg = config.write().unwrap();
+            cfg.settings.insert("key".to_string(), "updated".to_string());
+        }));
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    let cfg = config.read().unwrap();
+    cfg.settings.get("key").cloned().unwrap()
 }
