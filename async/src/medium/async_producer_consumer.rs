@@ -15,7 +15,7 @@ pub async fn async_producer_consumer() -> Vec<i32> {
     let (tx, mut rx) = mpsc::channel(10);
 
     tokio::spawn(async move {
-        for i in 0..10 {
+        for i in 1..=10 {
             tx.send(i).await.unwrap();
         }
     });
