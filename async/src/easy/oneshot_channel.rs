@@ -12,5 +12,11 @@
 use tokio::sync::oneshot;
 
 pub async fn oneshot_demo() -> String {
-    todo!()
+  let (tx, rx) = oneshot::channel();
+
+  tokio::spawn(async move {
+      tx.send("done".to_string()).unwrap();
+  });
+
+  rx.await.unwrap()
 }
