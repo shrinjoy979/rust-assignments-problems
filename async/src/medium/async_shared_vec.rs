@@ -13,5 +13,26 @@ use tokio::sync::Mutex;
 use std::sync::Arc;
 
 pub async fn async_shared_vec() -> usize {
-    todo!()
+    let vec = Arc::new(Mutex::new(Vec::<i32>::new()));
+    let mut handles = Vec::new();
+
+    for i in 0..5 {
+        let vec = Arc::clone(&vec);
+
+        let handle = tokio::spawn(async move {
+            for j in 0..10 {
+                let mut v = vec.lock().await;
+                v.push(i * 10 + j);
+            }
+        });
+
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.await.unwrap();
+    }
+
+    let v = vec.lock().await;
+    v.len()
 }
