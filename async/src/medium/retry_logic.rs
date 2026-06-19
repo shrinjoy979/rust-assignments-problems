@@ -18,5 +18,19 @@ where
     F: FnMut() -> Fut,
     Fut: Future<Output = Result<T, E>>,
 {
-    todo!()
+    let mut attempts = 0;
+
+    loop {
+        match f().await {
+            Ok(value) => return Ok(value),
+            Err(err) => {
+                if attempts >= max_retries {
+                    return Err(err);
+                }
+
+                attempts += 1;
+                sleep(Duration::from_millis(10)).await;
+            }
+        }
+    }
 }
