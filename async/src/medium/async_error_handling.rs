@@ -11,6 +11,8 @@
     cargo test --test async_error_handling_test
 */
 
+use tokio::time::{sleep, Duration};
+
 pub async fn fetch_data(id: u32) -> Result<String, String> {
     if id == 0 {
         return Err("Invalid ID".to_string());
