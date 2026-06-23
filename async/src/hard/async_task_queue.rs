@@ -9,7 +9,7 @@
     cargo test --test async_task_queue_test
 */
 
-use tokio::sync::mpsc;
+use tokio::sync::{mpsc, Mutex};
 use std::sync::Arc;
 
 pub struct TaskQueue {
@@ -18,13 +18,35 @@ pub struct TaskQueue {
 
 impl TaskQueue {
     pub fn new(worker_count: usize) -> Self {
-        todo!()
+        let (sender, receiver) = mpsc::channel::<Box<dyn FnOnce() + Send + 'static>>(100);
+
+        let receiver = Arc::new(Mutex::new(receiver));
+
+        for _ in 0..worker_count {
+            let rx = Arc::clone(&receiver);
+
+            tokio::spawn(async move {
+                loop {
+                    let task = {
+                        let mut receiver = rx.lock().await;
+                        receiver.recv().await
+                    };
+
+                    match task {
+                        Some(task) => task(),
+                        None => break,
+                    }
+                }
+            });
+        }
+
+        Self { sender }
     }
 
     pub async fn push<F>(&self, f: F)
     where
         F: FnOnce() + Send + 'static,
     {
-        todo!()
+        let _ = self.sender.send(Box::new(f)).await;
     }
 }
