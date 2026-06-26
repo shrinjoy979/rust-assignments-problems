@@ -9,6 +9,24 @@
     cargo test --test fan_out_fan_in_test
 */
 
+use tokio::task;
+
 pub async fn fan_out_fan_in(v: Vec<i32>) -> i32 {
-    todo!()
+  let mut handles = Vec::new();
+
+  // Fan-out: spawn one task per element
+  for num in v {
+      let handle = task::spawn(async move {
+          num * num
+      });
+      handles.push(handle);
+  }
+
+  // Fan-in: await all tasks and sum the results
+  let mut sum = 0;
+  for handle in handles {
+      sum += handle.await.unwrap();
+  }
+
+  sum
 }
