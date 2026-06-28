@@ -18,17 +18,48 @@ pub struct TaskScheduler {
 
 impl TaskScheduler {
     pub fn new() -> Self {
-        todo!()
+        Self {
+            tasks: Arc::new(Mutex::new(Vec::new())),
+        }
     }
 
     pub fn schedule<F>(&self, delay: Duration, f: F)
     where
         F: FnOnce() + Send + 'static,
     {
-        todo!()
+        let run_at = Instant::now() + delay;
+
+        let mut tasks = self.tasks.lock().unwrap();
+        tasks.push((run_at, Box::new(f)));
+
+        // Keep tasks sorted by execution time
+        tasks.sort_by_key(|(instant, _)| *instant);
     }
 
     pub fn start(&self) {
-        todo!() // Spawn a background task to process the queue
+        let tasks = Arc::clone(&self.tasks);
+
+        tokio::spawn(async move {
+            loop {
+                let next_task = {
+                    let mut queue = tasks.lock().unwrap();
+
+                    if queue.is_empty() {
+                        None
+                    } else if queue[0].0 <= Instant::now() {
+                        Some(queue.remove(0))
+                    } else {
+                        None
+                    }
+                };
+
+                if let Some((_, task)) = next_task {
+                    task();
+                } else {
+                    // Avoid busy waiting
+                    sleep(Duration::from_millis(1)).await;
+                }
+            }
+        });
     }
 }
